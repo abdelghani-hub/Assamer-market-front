@@ -1,0 +1,224 @@
+<div class="min-h-screen flex items-center justify-center bg-cover bg-center">
+  <!-- Semi-transparent overlay -->
+  <div class="absolute inset-0 bg-gradient-to-b from-green-200 to-green-100"></div>
+
+  <div class="relative w-full max-w-md p-4 m-3">
+    <div class="bg-green-50 rounded-lg shadow-xl p-5">
+      <a routerLink="/"
+        class="flex flex-col text-center mb-4">
+        <img src="assets/images/app_logo.png" alt="logo" class="w-16 mx-auto">
+        <span id="logo_text" class="self-center text-xl font-bold whitespace-nowrap dark:text-white">Assamer Market</span>
+      </a>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <p *ngIf="errorMessage" class="text-red-500 text-center col-span-2">{{errorMessage}}</p>
+        <div class="grid grid-cols-6 gap-2">
+          <!-- First Name -->
+          <div class="col-span-3">
+            <label for="firstName" class="block text-xs font-medium text-gray-700">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              placeholder="firstName"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="firstName?.touched && firstName?.invalid"
+              [class.border-green-500]="firstName?.valid"
+              [class.focus:border-green-500]="firstName?.valid"
+            />
+            <div *ngIf="firstName?.touched && firstName?.invalid" class="text-xs text-red-500">Required and 3 min length</div>
+            <div *ngIf="registerForm.controls['firstName'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['firstName'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-span-3">
+            <label for="lastName" class="block text-xs font-medium text-gray-700">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+              placeholder="lastName"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="lastName?.touched && lastName?.invalid"
+              [class.border-green-500]="lastName?.valid"
+              [class.focus:border-green-500]="lastName?.valid"
+            />
+            <div *ngIf="lastName?.touched && lastName?.invalid" class="text-xs text-red-500">Required and 3 min length</div>
+            <div *ngIf="registerForm.controls['lastName'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['lastName'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- Username -->
+          <div class="col-span-6">
+            <label for="username" class="block text-xs font-medium text-gray-700">Username</label>
+            <input
+              type="text"
+              id="username"
+              formControlName="username"
+              placeholder="username"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="username?.touched && username?.invalid"
+              [class.border-green-500]="username?.valid"
+              [class.focus:border-green-500]="username?.valid"
+            />
+            <div *ngIf="username?.touched && username?.invalid" class="text-xs text-red-500">Required and 5 min length</div>
+            <div *ngIf="registerForm.controls['username'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['username'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="col-span-6">
+            <label for="email" class="block text-xs font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="email"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="email?.touched && email?.invalid"
+              [class.border-green-500]="email?.valid"
+              [class.focus:border-green-500]="email?.valid"
+            />
+            <div *ngIf="email?.touched && email?.invalid" class="text-xs text-red-500">Invalid email</div>
+            <div *ngIf="registerForm.controls['email'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['email'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="col-span-3">
+            <label for="password" class="block text-xs font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              placeholder="password"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="password?.touched && password?.invalid"
+              [class.border-green-500]="password?.valid"
+              [class.focus:border-green-500]="password?.valid"
+            />
+            <div *ngIf="password?.touched && password?.invalid" class="text-xs text-red-500">Min 6 characters</div>
+            <div *ngIf="registerForm.controls['password'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['password'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="col-span-3">
+            <label for="confirmPassword" class="block text-xs font-medium text-gray-700">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="confirmPassword"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="confirmPassword?.touched && confirmPassword?.invalid"
+              [class.border-green-500]="confirmPassword?.valid"
+              [class.focus:border-green-500]="confirmPassword?.valid"
+            />
+            <div *ngIf="confirmPassword?.touched && confirmPassword?.invalid" class="text-xs text-red-500">Should match password</div>
+            <div *ngIf="registerForm.controls['confirmPassword'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['confirmPassword'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="col-span-6">
+            <label for="phoneNumber" class="block text-xs font-medium text-gray-700">Phone Number</label>
+            <input
+              type="text"
+              id="phoneNumber"
+              formControlName="phoneNumber"
+              placeholder="0X XX XX XX XX"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="phoneNumber?.touched && phoneNumber?.invalid"
+              [class.border-green-500]="phoneNumber?.valid"
+              [class.focus:border-green-500]="phoneNumber?.valid"
+            />
+            <div *ngIf="phoneNumber?.touched && phoneNumber?.invalid" class="text-xs text-red-500">Required and 10 min length</div>
+            <div *ngIf="registerForm.controls['phoneNumber'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['phoneNumber'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- City -->
+          <div class="col-span-2">
+            <label for="city" class="block text-xs font-medium text-gray-700">City</label>
+            <select
+              id="city"
+              formControlName="city"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="city?.touched && city?.invalid"
+              [class.border-green-500]="city?.valid"
+              [class.focus:border-green-500]="city?.valid"
+            >
+              <option>Tinghir</option>
+              <option>Ouarzazat</option>
+              <option>Zagora</option>
+              <option>Errachidia</option>
+              <option>Midelt</option>
+            </select>
+            <div *ngIf="city?.touched && city?.invalid" class="text-xs text-red-500">Required</div>
+            <div *ngIf="registerForm.controls['city'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['city'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="col-span-4">
+            <label for="address" class="block text-xs font-medium text-gray-700">Address</label>
+            <input
+              type="text"
+              id="address"
+              formControlName="address"
+              placeholder="address"
+              class="mt-1 block w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1"
+              [class.border-red-500]="address?.touched && address?.invalid"
+              [class.border-green-500]="address?.valid"
+              [class.focus:border-green-500]="address?.valid"
+            />
+            <div *ngIf="address?.touched && address?.invalid" class="text-xs text-red-500">Required and 10 min length</div>
+            <div *ngIf="registerForm.controls['address'].errors?.['serverError']" class="text-xs text-red-500">
+              {{ registerForm.controls['address'].errors?.['serverError'] }}
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            *ngIf="!loading; else loadingButton"
+            type="submit"
+            [disabled]="registerForm.invalid"
+            class="my-2 col-span-6 cursor-pointer w-full flex justify-center py-1.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-800 hover:bg-green-700 focus:outline-none focus:ring-1 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Create Account
+          </button>
+
+          <ng-template
+            #loadingButton>
+            <button disabled type="button" class="col-span-6 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 flex items-center justify-center">
+              <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+              </svg>
+              Submitting...
+            </button>
+          </ng-template>
+
+        </div>
+      </form>
+
+      <!-- Login Link -->
+      <p class="mt-3 text-center text-xs text-gray-600">
+        Already have an account?
+        <a routerLink="/auth/login" class="font-medium text-green-600 hover:text-green-500">
+          Sign in
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

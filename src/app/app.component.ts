@@ -1,12 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {FormsModule} from "@angular/forms";
+import {initFlowbite} from "flowbite";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone: true,
+  imports: [RouterOutlet, FormsModule],
+  templateUrl: './app.component.html'
 })
-export class AppComponent {
-  title = 'pfe-front';
+export class AppComponent implements OnInit {
+  title = 'assamer-market';
+
+  ngOnInit() {
+    initFlowbite();
+  }
 }
