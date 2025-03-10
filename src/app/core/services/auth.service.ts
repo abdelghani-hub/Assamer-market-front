@@ -100,6 +100,6 @@ export class AuthService {
     }
 
     get user(): User | null {
-        return this.currentUserValue ? jwtDecode<User>(this.currentUserValue.token) : null;
+        return this.currentUserValue?.token ? jwtDecode<User>(this.currentUserValue.token) : null;
     }
 }

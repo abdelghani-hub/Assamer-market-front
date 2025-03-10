@@ -1,31 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {NgIf} from '@angular/common';
-import {RouterLink} from '@angular/router';
-import {AuthService} from '../../core/services/auth.service';
-import User from '../../types/User';
+import {HeroSectionComponent} from '../../components/hero-section/hero-section.component';
+import {CategoriesSectionComponent} from '../../components/categories-section/categories-section.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    NgIf,
-    RouterLink
+    HeroSectionComponent,
+    CategoriesSectionComponent
   ],
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-
-  private authService: AuthService;
-
-  constructor(authService: AuthService) {
-    this.authService = authService;
-  }
-
   ngOnInit(): void {
 
-  }
-
-  get user(): User | null {
-    return this.authService.user;
   }
 }

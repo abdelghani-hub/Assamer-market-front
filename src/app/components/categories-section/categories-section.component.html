@@ -1,0 +1,29 @@
+<section id="categories" class="categories-section w-full bg-white p-4 md:py-3 md:px-8 lg:px-10 dark:bg-slate-900">
+  <h2 class="my-4 text-2xl font-bold text-green-500 dark:text-green-300 uppercase">Popular categories</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="flex items-center justify-center w-full py-20">
+    <div class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-green-500 border-r-transparent dark:border-green-300 dark:border-r-transparent align-[-0.125em]" role="status">
+      <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Categories Slider -->
+  <div *ngIf="!isLoading" class="w-full px-4">
+    <div #sliderContainer class="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-green-500 scrollbar-track-gray-100 dark:scrollbar-thumb-green-300 dark:scrollbar-track-slate-700">
+      <div #slider class="flex flex-row gap-3 py-5" style="min-width: max-content;">
+        <div *ngFor="let category of categories"
+             class="border border-gray-300 dark:border-gray-500 drop-shadow-lg relative h-80 category-card hover:translate-y-1 cursor-pointer w-3/4 md:w-2/5 lg:w-1/6 shrink-0 rounded-lg overflow-hidden">
+          <img class="absolute z-1 w-full h-full object-cover rounded object-center"
+               [src]="getCategoryImage(category)"
+               [alt]="category.name">
+          <a [routerLink]="['/categories', category.id]" class="absolute z-2 w-full h-full p-2">
+            <p class="h-80 w-full text-gray-50 dark:text-gray-300">
+              {{ category.name }}
+            </p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+/* Custom scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 8px; /* Thin scrollbar height */
+  width: 8px; /* Ensure consistent width for vertical scrollbars */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light track */
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #4CAF50; /* Green thumb */
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #45a049; /* Darker green on hover */
+}
+
+/* Hide scrollbar buttons */
+.scrollbar-thin::-webkit-scrollbar-button {
+  display: none; /* Hide start/end buttons */
+  width: 0;
+  height: 0;
+}
+
+/* Hide scrollbar corner (if applicable) */
+.scrollbar-thin::-webkit-scrollbar-corner {
+  display: none;
+}
+
+/* Dark mode adjustments */
+.dark .scrollbar-thin::-webkit-scrollbar-track {
+  background: #374151; /* Dark track */
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #4ade80; /* Light green thumb */
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #22c55e; /* Darker green thumb on hover */
+}

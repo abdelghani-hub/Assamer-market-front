@@ -1,14 +1,17 @@
 @import "tailwindcss";
 
-/*@tailwind base;*/
-/*@tailwind components;*/
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
 #logo_text {
-  background: -webkit-linear-gradient(left, #1e8642, #34ff00, #36c236);
+  background: -webkit-linear-gradient(right, #1e8642, #34ff00, #36c236);
+  background: linear-gradient(to right, #1e8642, #34ff00, #36c236);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family:'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+  color: transparent; /* fallback */
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 /* tags */

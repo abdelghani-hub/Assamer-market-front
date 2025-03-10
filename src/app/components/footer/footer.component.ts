@@ -7,8 +7,7 @@ import {LogoComponent} from '../logo/logo.component';
   imports: [
     LogoComponent
   ],
-  templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  templateUrl: './footer.component.html'
 })
 export class FooterComponent {
 

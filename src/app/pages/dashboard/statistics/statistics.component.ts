@@ -4,8 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-statistics',
   standalone: true,
   imports: [],
-  templateUrl: './statistics.component.html',
-  styleUrl: './statistics.component.css'
+  templateUrl: './statistics.component.html'
 })
 export class StatisticsComponent {
 
