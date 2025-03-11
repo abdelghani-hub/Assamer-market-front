@@ -4,17 +4,19 @@ import { Observable, forkJoin, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import Category from '../../types/Category';
 import ApiResponse from '../../types/ApiResponse';
+import {FileService} from './file.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
   private apiUrl: string = 'http://localhost:8080/api/v1/categories';
-  private baseUrl: string = 'http://localhost:8080';
   private http: HttpClient;
+  private fileService: FileService;
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, fileService: FileService) {
     this.http = http;
+    this.fileService = fileService;
   }
 
   public getCategories(): Observable<Category[]> {
@@ -35,13 +37,8 @@ export class CategoryService {
               return of(category);
             }
 
-            // Get the full URL if it's a relative path
-            const fullImageUrl = category.imageSrc.startsWith('/')
-              ? `${this.baseUrl}${category.imageSrc}`
-              : category.imageSrc;
-
             // Load the image
-            return this.loadImageAsBase64(fullImageUrl).pipe(
+            return this.fileService.loadImageAsBase64(category.imageSrc).pipe(
               map(base64Image => {
                 return { ...category, imageSrc: base64Image };
               })
@@ -50,25 +47,6 @@ export class CategoryService {
 
           // Wait for all image operations to complete
           return forkJoin(imageLoadObservables);
-        })
-      );
-  }
-
-  private loadImageAsBase64(imageUrl: string): Observable<string> {
-    return this.http.get(imageUrl, { responseType: 'blob' })
-      .pipe(
-        switchMap(blob => {
-          return new Observable<string>(observer => {
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = () => {
-              observer.next(reader.result as string);
-              observer.complete();
-            };
-            reader.onerror = (error) => {
-              observer.error(error);
-            };
-          });
         })
       );
   }
