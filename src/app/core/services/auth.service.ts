@@ -90,9 +90,9 @@ export class AuthService {
         // redirect depending on role
         let user = jwtDecode<User>(res.token);
         switch (user.role) {
-            case 'ADMIN':
+            case 'ROLE_ADMIN':
                 return '/dashboard';
-            case 'SELLER':
+            case 'ROLE_SELLER':
                 return '/seller';
             default:
                 return '/home';

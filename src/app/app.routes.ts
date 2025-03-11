@@ -30,7 +30,7 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES),
     canActivate: [roleGuard],
     data: {
-      roles: ['ADMIN']
+      roles: ['ROLE_ADMIN']
     }
   },
   {
@@ -38,7 +38,7 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/seller/seller.routes').then(m => m.SellerRoutes),
     canActivate: [roleGuard],
     data: {
-      roles: ['SELLER']
+      roles: ['ROLE_SELLER']
     }
   }
 ];

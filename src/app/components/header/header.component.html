@@ -37,15 +37,15 @@
               <li>
                 <a routerLink="/profile" class="block py-2 px-4 text-sm hover:bg-green-200 dark:hover:bg-gray-600">Profile</a>
               </li>
-              <li><a routerLink="/dashboard" *ngIf="role === 'ADMIN'"
+              <li><a routerLink="/dashboard" *ngIf="role == 'ROLE_ADMIN'"
                      class="block py-2 px-4 text-sm hover:bg-green-200 dark:hover:bg-gray-600">Dashboard</a></li>
-              <li><a routerLink="/seller/store" *ngIf="role == 'SELLER'"
+              <li><a routerLink="/seller/store" *ngIf="role == 'ROLE_SELLER'"
                      class="block py-2 px-4 text-sm hover:bg-green-200 dark:hover:bg-gray-600">My Store</a></li>
             </ul>
 
-            <ng-container *ngIf="role === 'CUSTOMER'">
+            <ng-container *ngIf="role == 'ROLE_CUSTOMER'">
               <ul class="p-2">
-                <span *ngIf="user.sellerRequest?.status === 'pending'"
+                <span *ngIf="user.sellerRequest?.status == 'pending'"
                       class="block py-2 px-4 text-sm text-center text-white bg-green-500 font-semibold rounded-md">
                   Seller Request Pending ...
                 </span>

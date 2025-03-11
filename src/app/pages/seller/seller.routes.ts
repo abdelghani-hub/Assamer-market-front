@@ -9,7 +9,7 @@ export const SellerRoutes: Routes = [
     component: MainComponent,
     canActivate: [roleGuard],
     data: {
-      roles: ['SELLER']
+      roles: ['ROLE_SELLER']
     },
     children: [
       {

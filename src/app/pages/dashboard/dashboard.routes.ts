@@ -9,7 +9,7 @@ export const DASHBOARD_ROUTES: Routes = [
     component: MainComponent,
     canActivate: [roleGuard],
     data: {
-      roles: ['ADMIN']
+      roles: ['ROLE_ADMIN']
     },
     children: [
       {
