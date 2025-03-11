@@ -8,8 +8,7 @@ import {RouterOutlet} from "@angular/router";
   selector: 'app-seller-main',
   standalone: true,
   imports: [CommonModule, FooterComponent, HeaderComponent, RouterOutlet],
-  templateUrl: './main.component.html',
-  styleUrl: './main.component.css'
+  templateUrl: './main.component.html'
 })
 export class MainComponent {
 

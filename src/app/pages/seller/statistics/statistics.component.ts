@@ -5,8 +5,7 @@ import {CommonModule} from "@angular/common";
   selector: 'app-seller-statistics',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './statistics.component.html',
-  styleUrl: './main.component.css'
+  templateUrl: './statistics.component.html'
 })
 export class StatisticsComponent {
 

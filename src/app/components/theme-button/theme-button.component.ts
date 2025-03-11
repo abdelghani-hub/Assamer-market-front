@@ -3,6 +3,7 @@ import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-theme-button',
+  standalone: true,
   imports: [
     NgIf
   ],

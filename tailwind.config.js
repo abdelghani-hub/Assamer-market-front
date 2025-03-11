@@ -1,9 +1,6 @@
 module.exports = {
   content: [
-    "./resources/**/*.blade.php",
-    "./resources/**/*.js",
-    "./resources/**/*.vue",
-    "./node_modules/flowbite/**/*.js"
+    "./src/**/*.{html,ts}",
   ],
   darkMode: 'class',
   theme: {
