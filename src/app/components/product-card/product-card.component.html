@@ -1,4 +1,4 @@
-<div *ngIf="product" [routerLink]="['/products', product.slug]">
+<a *ngIf="product" [routerLink]="['/products', product.slug]">
   <div class="relative w-full dark:text-gray-300">
     <img class="w-full object-cover h-56"
          [src]="getImageSrc(product)"
@@ -78,4 +78,4 @@
 <!--      Out of stock-->
 <!--    </button>-->
 <!--  </div>-->
-</div>
+</a>

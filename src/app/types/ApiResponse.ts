@@ -1,5 +1,5 @@
 type ApiResponse<T> = {
-  data: T[];
+  data: T;
   message: string;
   status: string;
   errors?: {

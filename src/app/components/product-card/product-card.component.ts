@@ -4,7 +4,6 @@ import {NgIf, SlicePipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {AuthService} from '../../core/services/auth.service';
 
-
 @Component({
   selector: 'app-product-card',
   standalone: true,

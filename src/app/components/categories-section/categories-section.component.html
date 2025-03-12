@@ -17,7 +17,7 @@
           <img class="absolute z-1 w-full h-full object-cover rounded object-center"
                [src]="getCategoryImage(category)"
                [alt]="category.name">
-          <a [routerLink]="['/categories', category.id]" class="absolute z-2 w-full h-full p-2">
+          <a [routerLink]="['/categories', category.name]" class="absolute z-2 w-full h-full p-2">
             <p class="h-80 w-full text-gray-50 dark:text-gray-300">
               {{ category.name }}
             </p>
