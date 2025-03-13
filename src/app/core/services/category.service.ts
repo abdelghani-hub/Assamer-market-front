@@ -20,7 +20,7 @@ export class CategoryService {
   }
 
   public getCategories(): Observable<Category[]> {
-    return this.http.get<ApiResponse<Category>>(`${this.apiUrl}/all`)
+    return this.http.get<ApiResponse<Category[]>>(`${this.apiUrl}/all`)
       .pipe(
         switchMap(res => {
           // If there's no data or content is empty, return empty array
