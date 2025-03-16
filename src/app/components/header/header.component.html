@@ -1,5 +1,5 @@
-<header class="fixed w-full z-50 drop-shadow-lg bg-gray-200 dark:bg-green-950">
-  <nav class="border-gray-200 px-2 md:px-4 lg:px-6 py-2.5 ">
+<header class="h-16 fixed w-full z-50 drop-shadow-lg bg-gray-200 dark:bg-green-950">
+  <nav class="border-gray-200 px-2 md:px-4 lg:px-6 py-2.5 relative">
     <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
 
       <!-- Logo -->
@@ -7,6 +7,20 @@
 
       <!-- Right Section -->
       <div class="flex items-center lg:order-2">
+
+        <!-- Cart Button -->
+        <span class="relative cursor-pointer mr-2" (click)="toggleCart()">
+          <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+               height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd"
+                  d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
+                  clip-rule="evenodd"/>
+          </svg>
+          <span *ngIf="(((cartProducts$ | async) ?? []).length > 0)" id="cartCount"
+                class="absolute -top-3 right-0 w-4 h-4 bg-green-500 text-white text-xs rounded-full flex items-center justify-center">
+            {{ (cartProducts$ | async)?.length }}
+          </span>
+        </span>
 
         <!-- Dark & Light Theme Toggle -->
         <app-theme-button/>
@@ -58,7 +72,8 @@
 
             <ul class="py-1 text-gray-700 dark:text-gray-300">
               <li>
-                <button (click)="logout()" class="w-full flex gap-2 py-2 px-4 text-sm hover:bg-green-200 dark:hover:bg-gray-600 cursor-pointer rounded-2xl">
+                <button (click)="logout()"
+                        class="w-full flex gap-2 py-2 px-4 text-sm hover:bg-green-200 dark:hover:bg-gray-600 cursor-pointer rounded-2xl">
                   <svg class="w-6 h-6 text-gray-800 dark:text-white rotate-180" aria-hidden="true"
                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                        viewBox="0 0 24 24">
@@ -76,16 +91,13 @@
         <ng-template #guestLinks>
           <a routerLink="/auth/login"
              class="hidden md:block text-gray-800 dark:text-white hover:text-green-600 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5">
-            Log in
+            Login
           </a>
           <a routerLink="/auth/register"
              class="hidden md:block text-white bg-green-500 hover:bg-green-600 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5">
             Register
           </a>
         </ng-template>
-
-        <!-- Cart Button -->
-        <!--  todo      <div id="cartbtn" data-dropdown-toggle="cart" class="relative w-8 h-8 cursor-pointer ml-2"></div>-->
 
         <!-- Mobile Menu Button -->
         <button
@@ -99,7 +111,6 @@
                   d="M1 1h15M1 7h15M1 13h15"/>
           </svg>
         </button>
-
       </div>
 
       <!-- Main Navigation -->
@@ -111,8 +122,9 @@
           <ng-container *ngIf="!user">
             <li class="md:hidden flex w-full justify-around gap-3 mb-4">
               <a routerLink="/auth/login"
-                 class="text-gray-800 dark:text-white hover:text-green-600 font-medium border border-green-200 px-3 py-2 rounded-lg">Log
-                in</a>
+                 class="text-gray-800 dark:text-white hover:text-green-600 font-medium border border-green-200 px-3 py-2 rounded-lg">
+                Login
+              </a>
               <a routerLink="/auth/register"
                  class="text-white bg-green-500 hover:bg-green-600 font-medium px-3 py-2 rounded-lg">Register</a>
             </li>
@@ -133,7 +145,9 @@
                  class="block py-2 pr-4 pl-3  dark:text-gray-300 hover:text-green-500">Contact</a></li>
         </ul>
       </div>
-
     </div>
+    <app-cart *ngIf="isCartOpen" (closeCart)="isCartOpen = false"></app-cart>
   </nav>
 </header>
+<div class="w-full h-16"></div>
+

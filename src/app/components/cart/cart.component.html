@@ -1,0 +1,58 @@
+<div
+  class=" border border-green-400 rounded-md bg-gray-300 dark:bg-slate-700 dark:text-gray-300
+          md:w-72 absolute top-0 right-0 mt-14 mr-1.5"
+>
+  <div class="shadow-lg rounded-lg overflow-hidden">
+    <div class="flex items-center justify-between p-2 border-b border-green-300">
+      <h1 class="text-lg font-bold mr-3">Shopping Cart</h1>
+      <button class="cursor-pointer" (click)="hideCart()">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>
+      </button>
+    </div>
+
+    @if (((cartProducts$ | async) ?? []).length > 0) {
+      <div class="p-2">
+        <div *ngFor="let item of cartProducts$ | async" class="border border-green-700 rounded-md flex items-center mb-2">
+          <img class="h-16 w-16 object-contain rounded-lg mr-4" [src]="item.photo" alt="Product">
+          <div class="flex-1 mr-3">
+            <h2 class="text-lg font-bold">
+              {{ item.productSlug }}
+            </h2>
+            <span class="text-gray-500 dark:text-gray-300 font-bold">
+                {{ item.price }} MAD
+                <small>
+                  ({{ item.quantity }} units)
+                </small>
+              </span>
+          </div>
+          <button class="text-gray-800 dark:text-white hover:text-red-500 dark:hover:text-red-400 px-2" (click)="removeFromCart(item.productSlug)">
+            <svg class="w-6 h-6" aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                 viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
+                    clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="px-4 py-3">
+        <div class="flex justify-between items-center">
+          <span class="font-bold">Total:</span>
+          <span class="font-bold text-lg underline text-lime-600 dark:text-white">
+            {{ cartTotalPrice$ | async }} MAD
+          </span>
+        </div>
+        <button class="block w-full mt-4 bg-lime-600 hover:bg-lime-700 text-white font-bold py-2 px-4 rounded" (click)="checkout()">
+          Checkout
+        </button>
+      </div>
+    } @else {
+      <div class="text-center py-5">
+        <span class="text-gray-500 dark:text-gray-300">Cart is empty</span>
+      </div>
+    }
+  </div>
+</div>
