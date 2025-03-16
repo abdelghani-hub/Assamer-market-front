@@ -4,13 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectCartProducts, selectCartTotalPrice } from '../../store/cart/cart.selectors';
 import { removeFromCart, clearCart } from '../../store/cart/cart.actions';
-
-interface CartItem {
-  productSlug: string;
-  photo: string;
-  price: number;
-  quantity: number;
-}
+import CartItem from '../../types/CartItem';
 
 @Component({
   selector: 'app-cart',

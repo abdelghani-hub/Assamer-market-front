@@ -4,7 +4,7 @@
     <div #categoriesHeader id="categories_header"
          class="flex items-center flex-nowrap overflow-x-scroll scrollbar-hide">
       <button id="prev" aria-label="slide backward" (click)="slidePrev()"
-              class="hidden absolute z-30 focus:outline-none cursor-pointer p-3 rounded-full bg-gray-400 bg-opacity-50 dark:bg-gray-500 dark:bg-opacity-55">
+              class="hidden absolute z-30 focus:outline-none  p-3 rounded-full bg-gray-400 bg-opacity-50 dark:bg-gray-500 dark:bg-opacity-55">
         <svg class="dark:text-gray-900" width="10" height="10" viewBox="0 0 8 14" fill="none"
              xmlns="http://www.w3.org/2000/svg">
           <path d="M7 1L1 7L7 13" stroke="currentColor" stroke-width="3" stroke-linecap="round"
@@ -24,7 +24,7 @@
       }
 
       <button id="next" aria-label="slide backward" (click)="slideNext()"
-              class="rotate-180 -right-0 absolute z-30 focus:outline-none cursor-pointer p-3 rounded-full bg-gray-400 bg-opacity-50 dark:bg-gray-500 dark:bg-opacity-55">
+              class="rotate-180 -right-0 absolute z-30 focus:outline-none  p-3 rounded-full bg-gray-400 bg-opacity-50 dark:bg-gray-500 dark:bg-opacity-55">
         <svg class="dark:text-gray-900" width="10" height="10" viewBox="0 0 8 14" fill="none"
              xmlns="http://www.w3.org/2000/svg">
           <path d="M7 1L1 7L7 13" stroke="currentColor" stroke-width="3" stroke-linecap="round"
@@ -59,7 +59,7 @@
       } @else if (products.length > 0) {
         @for (product of products; track product.id) {
           <app-product-card [product]="product"
-                            class="hover:scale-[101%] bg-white dark:bg-slate-800 m-2 rounded-lg overflow-hidden shadow-lg ring-2 hover:ring-4 ring-green-500 ring-opacity-70 max-w-sm w-full md:w-[30%] flex flex-col justify-between cursor-pointer"
+                            class="hover:scale-[101%] bg-white dark:bg-slate-800 m-2 rounded-lg overflow-hidden shadow-lg ring-2 hover:ring-4 ring-green-500 ring-opacity-70 max-w-sm w-full md:w-[30%] flex flex-col justify-between "
           ></app-product-card>
         }
       } @else {

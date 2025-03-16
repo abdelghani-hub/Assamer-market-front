@@ -4,6 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global styles */
+button{
+  cursor: pointer;
+}
+
+
+
 #logo_text {
   background: -webkit-linear-gradient(right, #1e8642, #34ff00, #36c236);
   background: linear-gradient(to right, #1e8642, #34ff00, #36c236);

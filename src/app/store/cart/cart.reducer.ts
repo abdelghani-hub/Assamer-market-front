@@ -7,9 +7,14 @@ export const initialState: Cart = { productsUnits: [] };
 export const cartReducer = createReducer(
   initialState,
   on(loadCartSuccess, (state, { cart }) => ({ ...state, ...cart })),
-  on(addToCart, (state, { product }) => ({
+  on(addToCart, (state, { product, quantity }) => ({
     ...state,
-    productsUnits: [...state.productsUnits, product]
+    productsUnits: [...state.productsUnits, {
+      productSlug: product.slug,
+      quantity: quantity,
+      photo: product.attachmentsSrc[0],
+      price: product.price
+    }]
   })),
   on(removeFromCart, (state, { productSlug }) => ({
     ...state,
