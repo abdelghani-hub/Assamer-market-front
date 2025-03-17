@@ -49,8 +49,7 @@ export class ProductCardComponent {
 
   // ****************** Favorite logic ******************
   isInFavorites(id: string | undefined) {
-    // random boolean
-    return Math.random() >= 0.5;
+    return false;
   }
 
   removeFromFavorites(id: string | undefined) {
