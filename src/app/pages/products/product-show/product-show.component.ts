@@ -6,6 +6,9 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {addToCart} from '../../../store/cart/cart.actions';
 import {Store} from '@ngrx/store';
+import {AuthService} from '../../../core/services/auth.service';
+import {selectAllFavorites, selectFavoritesLoading} from '../../../store/favorites/favorites.selectors';
+import {addToFavorites, loadFavorites, removeFromFavorites} from '../../../store/favorites/favorites.actions';
 
 @Component({
   selector: 'app-product-show',
@@ -28,15 +31,20 @@ export class ProductShowComponent implements OnInit {
   isAddingToFavorites: boolean = false;
   isRemovingFromFavorites: boolean = false;
   isFavorite: boolean = false;
+  favorites: Product[] = [];
+  favoritesLoading = false;
+  favoriteActionInProgress = false;
   private slideInterval: any;
   private store: Store;
-
+  private authService: AuthService;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private productService: ProductService,
-    store: Store) {
+    store: Store,
+    authService: AuthService) {
     this.store = store;
+    this.authService = authService;
   }
 
   ngOnInit(): void {
@@ -47,8 +55,26 @@ export class ProductShowComponent implements OnInit {
     this.productService.getProductBySlug(this.slug)?.subscribe(
       product => {
         this.product = product;
+        this.checkIfFavorite();
       }
-    )
+    );
+
+    if (!this.user) {
+      return;
+    }
+    // Load favorites when component initializes
+    this.store.dispatch(loadFavorites());
+
+    // Subscribe to favorites state to keep local cache updated
+    this.store.select(selectAllFavorites).subscribe(favorites => {
+      this.favorites = favorites;
+      this.checkIfFavorite();
+    });
+
+    // Subscribe to loading state
+    this.store.select(selectFavoritesLoading).subscribe(loading => {
+      this.favoritesLoading = loading;
+    });
   }
 
   get hasProduct(): boolean {
@@ -59,6 +85,10 @@ export class ProductShowComponent implements OnInit {
     if (this.product?.attachmentsSrc.length == 0)
       return ["assets/images/default-product-image.png"];
     return this.product?.attachmentsSrc || [];
+  }
+
+  get user() {
+    return this.authService.user;
   }
 
   incrementQuantity(): void {
@@ -73,7 +103,6 @@ export class ProductShowComponent implements OnInit {
     }
   }
 
-
   addToCart(): void {
     if (this.product) {
       this.store.dispatch(addToCart({product: this.product, quantity: this.quantity}));
@@ -86,52 +115,38 @@ export class ProductShowComponent implements OnInit {
     }
   }
 
-  // checkIfFavorite(): void {
-  //   if (!this.product) return;
-  //
-  //   this.favoriteService.checkIsFavorite(this.product.id).subscribe({
-  //     next: (isFavorite) => {
-  //       this.isFavorite = isFavorite;
-  //     },
-  //     error: (error) => {
-  //       console.error('Error checking favorite status:', error);
-  //     }
-  //   });
-  // }
-  //
+  checkIfFavorite(): void {
+    if (!this.product) return;
+    this.isFavorite = this.favorites.some(p => p.slug === this.product?.slug);
+  }
 
-  //
-  // addToFavorites(): void {
-  //   if (!this.product) return;
-  //
-  //   this.isAddingToFavorites = true;
-  //   this.favoriteService.addToFavorites(this.product.id).subscribe({
-  //     next: () => {
-  //       this.isAddingToFavorites = false;
-  //       this.isFavorite = true;
-  //     },
-  //     error: (error) => {
-  //       this.isAddingToFavorites = false;
-  //       console.error('Error adding to favorites:', error);
-  //     }
-  //   });
-  // }
-  //
-  // removeFromFavorites(): void {
-  //   if (!this.product) return;
-  //
-  //   this.isRemovingFromFavorites = true;
-  //   this.favoriteService.removeFromFavorites(this.product.id).subscribe({
-  //     next: () => {
-  //       this.isRemovingFromFavorites = false;
-  //       this.isFavorite = false;
-  //     },
-  //     error: (error) => {
-  //       this.isRemovingFromFavorites = false;
-  //       console.error('Error removing from favorites:', error);
-  //     }
-  //   });
-  // }
+  addToFavorites(): void {
+    if (this.product && !this.favoriteActionInProgress) {
+      this.isAddingToFavorites = true;
+      this.favoriteActionInProgress = true;
+      this.store.dispatch(addToFavorites({productSlug: this.product.slug}));
+
+      // Reset action flags after a short delay to prevent multiple clicks
+      setTimeout(() => {
+        this.isAddingToFavorites = false;
+        this.favoriteActionInProgress = false;
+      }, 1000);
+    }
+  }
+
+  removeFromFavorites(): void {
+    if (this.product && !this.favoriteActionInProgress) {
+      this.isRemovingFromFavorites = true;
+      this.favoriteActionInProgress = true;
+      this.store.dispatch(removeFromFavorites({productSlug: this.product.slug}));
+
+      // Reset action flags after a short delay to prevent multiple clicks
+      setTimeout(() => {
+        this.isRemovingFromFavorites = false;
+        this.favoriteActionInProgress = false;
+      }, 1000);
+    }
+  }
 
   // Start automatic slideshow
   startSlideshow() {
