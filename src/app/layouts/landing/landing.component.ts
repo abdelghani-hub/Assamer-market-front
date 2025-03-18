@@ -1,8 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import {Component, OnInit} from "@angular/core";
+import {RouterModule} from "@angular/router";
 import {HeaderComponent} from '../../components/header/header.component';
 import {FooterComponent} from '../../components/footer/footer.component';
-
 
 @Component({
   selector: 'app-landing',
@@ -13,9 +12,6 @@ import {FooterComponent} from '../../components/footer/footer.component';
   templateUrl: './landing.component.html',
 })
 export class LandingComponent implements OnInit {
-
-  constructor() { }
-
   ngOnInit(): void {
   }
 }

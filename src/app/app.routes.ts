@@ -38,6 +38,12 @@ export const routes: Routes = [
     ]
   },
 
+  // Checkout routes
+  {
+    path: 'checkout',
+    loadChildren: () => import('./pages/checkout/checkout.routes').then(m => m.CHECKOUT_ROUTES)
+  },
+
   // Auth routes
   {
     path: 'auth',

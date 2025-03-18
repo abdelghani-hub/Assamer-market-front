@@ -13,7 +13,7 @@
     <div #sliderContainer class="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-green-500 scrollbar-track-gray-100 dark:scrollbar-thumb-green-300 dark:scrollbar-track-slate-700">
       <div #slider class="flex flex-row gap-3 py-5" style="min-width: max-content;">
         <div *ngFor="let category of categories"
-             class="border border-gray-300 dark:border-gray-500 drop-shadow-lg relative h-80 category-card hover:translate-y-1 cursor-pointer w-3/4 md:w-2/5 lg:w-1/6 shrink-0 rounded-lg overflow-hidden">
+             class="border border-gray-300 dark:border-gray-500 drop-shadow-lg relative h-80 category-card hover:translate-y-1  w-3/4 md:w-2/5 lg:w-1/6 shrink-0 rounded-lg overflow-hidden">
           <img class="absolute z-1 w-full h-full object-cover rounded object-center"
                [src]="getCategoryImage(category)"
                [alt]="category.name">

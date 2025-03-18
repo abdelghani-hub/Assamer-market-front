@@ -4,6 +4,8 @@ import {ProductService} from '../../../core/services/product.service';
 import Product from '../../../types/Product';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {addToCart} from '../../../store/cart/cart.actions';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-product-show',
@@ -23,16 +25,18 @@ export class ProductShowComponent implements OnInit {
   product: Product | null = null;
   quantity: number = 1;
   currentSlide: number = 0;
-  isAddingToCart: boolean = false;
   isAddingToFavorites: boolean = false;
   isRemovingFromFavorites: boolean = false;
   isFavorite: boolean = false;
   private slideInterval: any;
+  private store: Store;
 
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private productService: ProductService) {
+    private productService: ProductService,
+    store: Store) {
+    this.store = store;
   }
 
   ngOnInit(): void {
@@ -57,6 +61,31 @@ export class ProductShowComponent implements OnInit {
     return this.product?.attachmentsSrc || [];
   }
 
+  incrementQuantity(): void {
+    if (this.product && this.quantity < this.product.quantity) {
+      this.quantity++;
+    }
+  }
+
+  decrementQuantity(): void {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
+
+  addToCart(): void {
+    if (this.product) {
+      this.store.dispatch(addToCart({product: this.product, quantity: this.quantity}));
+    }
+  }
+
+  public handleQuantityChange() {
+    if (this.product && this.quantity > this.product?.quantity) {
+      this.quantity = this.product?.quantity || 1;
+    }
+  }
+
   // checkIfFavorite(): void {
   //   if (!this.product) return;
   //
@@ -70,34 +99,7 @@ export class ProductShowComponent implements OnInit {
   //   });
   // }
   //
-  incrementQuantity(): void {
-    if (this.product && this.quantity < this.product.quantity) {
-      this.quantity++;
-    }
-  }
 
-  decrementQuantity(): void {
-    if (this.quantity > 1) {
-      this.quantity--;
-    }
-  }
-
-  //
-  // addToCart(): void {
-  //   if (!this.product) return;
-  //
-  //   this.isAddingToCart = true;
-  //   this.cartService.addToCart(this.product.id, this.quantity).subscribe({
-  //     next: () => {
-  //       this.isAddingToCart = false;
-  //       // Show success notification or update cart count
-  //     },
-  //     error: (error) => {
-  //       this.isAddingToCart = false;
-  //       console.error('Error adding to cart:', error);
-  //     }
-  //   });
-  // }
   //
   // addToFavorites(): void {
   //   if (!this.product) return;
@@ -130,11 +132,6 @@ export class ProductShowComponent implements OnInit {
   //     }
   //   });
   // }
-  public handleQuantityChange() {
-    if (this.product && this.quantity > this.product?.quantity) {
-      this.quantity = this.product?.quantity || 1;
-    }
-  }
 
   // Start automatic slideshow
   startSlideshow() {

@@ -1,5 +1,5 @@
 <app-hero-section></app-hero-section>
-<app-categories-section></app-categories-section>
+<app-categories-section class="w-full"></app-categories-section>
 <div class="bg-blue-100 dark:bg-gray-800 px-4 py-8">
   <div class="flex gap-2 items-center justify-center">
     <span class="w-5 flex justify-center">
@@ -31,7 +31,7 @@
         @for (product of popularProducts; track product.id) {
           <app-product-card
             [product]="product"
-            class="hover:scale-[101%] bg-white dark:bg-slate-800 m-2 rounded-lg overflow-hidden shadow-lg ring-2 hover:ring-4 ring-green-500 ring-opacity-70 max-w-sm w-full md:w-[30%] flex flex-col justify-between cursor-pointer"
+            class="hover:scale-[101%] bg-white dark:bg-slate-800 m-2 rounded-lg overflow-hidden shadow-lg ring-2 hover:ring-4 ring-green-500 ring-opacity-70 max-w-sm w-full md:w-[30%] flex flex-col justify-between "
           ></app-product-card>
         }
       } @else {
