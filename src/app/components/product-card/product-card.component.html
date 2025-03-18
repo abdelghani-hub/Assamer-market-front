@@ -33,8 +33,10 @@
   <div class="p-2 md:py-4 flex gap-2 w-full">
     <ng-container *ngIf="user">
       <button
-        *ngIf="isInFavorites(product.id)"
-        (click)="removeFromFavorites(product.id); $event.preventDefault();"
+        *ngIf="isInFavorites()"
+        (click)="removeFromFavorites(); $event.preventDefault(); $event.stopPropagation();"
+        [disabled]="favoritesLoading || favoriteActionInProgress"
+        [class.favorites-loading]="favoritesLoading || favoriteActionInProgress"
         class="remove-from-favorites flex items-center justify-center text-nowrap py-2.5 px-3 md:px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
         <svg class="fill-pink-600 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
              width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -44,8 +46,10 @@
       </button>
 
       <button
-        *ngIf="!isInFavorites(product.id)"
-        (click)="addToFavorites(product.id); $event.preventDefault(); $event.stopPropagation();"
+        *ngIf="!isInFavorites()"
+        (click)="addToFavorites(); $event.preventDefault(); $event.stopPropagation();"
+        [disabled]="favoritesLoading || favoriteActionInProgress"
+        [class.favorites-loading]="favoritesLoading || favoriteActionInProgress"
         class="add-to-favorites flex items-center justify-center text-nowrap py-2.5 px-3 md:px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
              height="24" fill="none" viewBox="0 0 24 24">
@@ -57,7 +61,7 @@
 
     <button *ngIf="product.quantity > 0"
             (click)="addToCart(); $event.preventDefault(); $event.stopPropagation();"
-            class="add-to-cart  flex-grow text-white sm:mt-0 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center p-0 justify-center text-nowrap py-2.5 px-3 md:px-5">
+            class="add-to-cart flex-grow text-white sm:mt-0 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center p-0 justify-center text-nowrap py-2.5 px-3 md:px-5">
       <svg class="w-5 h-5 -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
            height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
