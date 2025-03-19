@@ -84,7 +84,7 @@ export class HeaderComponent {
   requestSeller() {
     this.sellerService.requestSeller().subscribe(res => {
       if(res.status == "success") {
-        NotificationUtil.success("Request sent successfully");
+        NotificationUtil.success(res.message);
         if (res.token) {
           this.authService.refreshUser(res.token);
         }
