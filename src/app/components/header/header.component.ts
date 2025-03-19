@@ -8,8 +8,9 @@ import {AsyncPipe, NgIf} from '@angular/common';
 import {CartComponent} from '../cart/cart.component';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {removeFromCart} from '../../store/cart/cart.actions';
 import {selectCartProducts, selectCartTotalPrice} from '../../store/cart/cart.selectors';
+import {SellerService} from '../../core/services/seller.service';
+import {NotificationUtil} from '../../helpers/NotificationUtil';
 
 @Component({
   selector: 'app-header',
@@ -36,6 +37,7 @@ export class HeaderComponent {
 
   constructor(
     authService: AuthService,
+    private sellerService: SellerService,
     private elementRef: ElementRef,
     private store: Store
   ) {
@@ -78,17 +80,23 @@ export class HeaderComponent {
     return this.authService.user;
   }
 
+  // ****************** Seller Request ****************** //
+  requestSeller() {
+    this.sellerService.requestSeller().subscribe(res => {
+      if(res.status == "success") {
+        NotificationUtil.success("Request sent successfully");
+        if (res.token) {
+          this.authService.refreshUser(res.token);
+        }
+      }else{
+        NotificationUtil.error("Request failed");
+      }
+    });
+  }
+
 
   // ****************** Cart ****************** //
   toggleCart() {
     this.isCartOpen = !this.isCartOpen;
-  }
-
-  removeFromCart(productSlug: string) {
-    this.store.dispatch(removeFromCart({productSlug}));
-  }
-
-  checkout() {
-    // Implement checkout logic here
   }
 }
