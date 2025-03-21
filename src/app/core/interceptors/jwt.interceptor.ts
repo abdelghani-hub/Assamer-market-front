@@ -9,16 +9,12 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   if (currentUser && currentUser.token) {
     req = req.clone({
       setHeaders: {
-        'Authorization': `Bearer ${currentUser.token}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${currentUser.token}`
       },
       withCredentials: true
     });
   } else {
     req = req.clone({
-      setHeaders: {
-        'Content-Type': 'application/json'
-      },
       withCredentials: true
     });
   }
