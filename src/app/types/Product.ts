@@ -9,6 +9,10 @@ type Product = {
   categoryName: string;
   status: string;
   attachmentsSrc: string[];
+  storeId: string;
+  createdAt: string;
+  updatedAt: string;
+  totalSales?: number;
 };
 
 export default Product;

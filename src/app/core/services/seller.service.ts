@@ -22,4 +22,12 @@ export class SellerService {
       })
     );
   }
+
+  getSellerRequestsCount() {
+    return this.http.get<ApiResponse<number>>(this.apiUrl + '/requests/count').pipe(
+      map(res => {
+        return res.data;
+      })
+    );
+  }
 }
