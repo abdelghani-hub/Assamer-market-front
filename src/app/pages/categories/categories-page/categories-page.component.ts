@@ -58,18 +58,14 @@ export class CategoriesPageComponent implements OnInit, AfterViewInit {
           this.productService.getByCategory(this.currentCategory.name).subscribe({
             next: (products) => {
               this.products = products || [];
+              this.loading = false;
             },
             error: () => {
               NotificationUtil.error("Failed to fetch products");
-            },
-            complete: () => {
               this.loading = false;
             }
           });
         },
-        complete: () => {
-          this.loading = false;
-        }
       });
     });
   }

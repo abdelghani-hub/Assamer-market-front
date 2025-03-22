@@ -7,9 +7,7 @@ type User = {
   firstName: string;
   lastName: string;
   cin: string;
-  sellerRequest?: {
-    status: string;
-  }
+  isSellerRequester: boolean
 };
 
 export default User;

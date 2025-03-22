@@ -7,6 +7,7 @@ type ApiResponse<T> = {
     message: string
   }[];
   _links?: string[];
+  token?: string;
 }
 
 export default ApiResponse;

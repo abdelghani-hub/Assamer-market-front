@@ -20,6 +20,10 @@ export const SellerRoutes: Routes = [
       {
         path: 'statistics',
         component: StatisticsComponent,
+      },
+      {
+        path: 'products',
+        loadChildren:  () => import('./seller-products/seller-products.routes').then(m => m.SellerProductsRoutes),
       }
     ]
   }

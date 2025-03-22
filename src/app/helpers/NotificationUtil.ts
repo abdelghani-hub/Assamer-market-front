@@ -52,4 +52,19 @@ export class NotificationUtil {
       timerProgressBar: true,
     });
   }
+
+  static async confirm(message: string, title: string = 'Are you sure?'): Promise<boolean> {
+    const result = await Swal.fire({
+      title: title,
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    });
+
+    return result.isConfirmed;
+  }
 }

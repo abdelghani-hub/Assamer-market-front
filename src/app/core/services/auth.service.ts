@@ -39,8 +39,8 @@ export class AuthService {
 
     constructor(http: HttpClient, router: Router) {
         this.currentUserSubject = new BehaviorSubject<AuthResponse | null>(
-            window.localStorage.getItem('currentUser')
-                ? JSON.parse(window.localStorage.getItem('currentUser')!)
+            window.localStorage.getItem('user')
+                ? JSON.parse(window.localStorage.getItem('user')!)
                 : null
         );
         this.currentUser = this.currentUserSubject.asObservable();
@@ -53,7 +53,7 @@ export class AuthService {
             .post<AuthResponse>(`${this.apiUrl}/auth/register`, userData)
             .pipe(
                 map(res => {
-                    window.localStorage.setItem('currentUser', JSON.stringify(res));
+                    window.localStorage.setItem('user', JSON.stringify(res));
                     this.currentUserSubject.next(res);
                     return res;
                 })
@@ -66,7 +66,7 @@ export class AuthService {
             .post<AuthResponse>(`${this.apiUrl}/auth/login`, loginRequest)
             .pipe(
                 map(res => {
-                    window.localStorage.setItem('currentUser', JSON.stringify(res));
+                    window.localStorage.setItem('user', JSON.stringify(res));
                     this.currentUserSubject.next(res);
                     return res;
                 })
@@ -78,7 +78,7 @@ export class AuthService {
     }
 
     logout() {
-        window.localStorage.removeItem('currentUser');
+        window.localStorage.removeItem('user');
         this.router.navigate(['/home']).then(() => {
             window.location.reload();
         });
@@ -102,4 +102,9 @@ export class AuthService {
     get user(): User | null {
         return this.currentUserValue?.token ? jwtDecode<User>(this.currentUserValue.token) : null;
     }
+
+  refreshUser(token: string) {
+    window.localStorage.setItem('user', JSON.stringify({ token }));
+    this.currentUserSubject.next({ token });
+  }
 }

@@ -53,20 +53,22 @@
               </li>
               <li><a routerLink="/dashboard" *ngIf="role == 'ROLE_ADMIN'"
                      class="block py-2 px-4 text-sm hover:bg-green-200 dark:hover:bg-gray-600">Dashboard</a></li>
-              <li><a routerLink="/seller/store" *ngIf="role == 'ROLE_SELLER'"
+              <li><a routerLink="/seller" *ngIf="role == 'ROLE_SELLER'"
                      class="block py-2 px-4 text-sm hover:bg-green-200 dark:hover:bg-gray-600">My Store</a></li>
             </ul>
 
             <ng-container *ngIf="role == 'ROLE_CUSTOMER'">
               <ul class="p-2">
-                <span *ngIf="user.sellerRequest?.status == 'pending'"
-                      class="block py-2 px-4 text-sm text-center text-white bg-green-500 font-semibold rounded-md">
+                <span *ngIf="user.isSellerRequester"
+                      class="block py-2 px-4 text-sm text-center text-white bg-green-500/40 font-semibold rounded-md">
                   Seller Request Pending ...
                 </span>
-                <form *ngIf="!user.sellerRequest || user.sellerRequest.status !== 'pending'"
+                <div *ngIf="!user.isSellerRequester"
                       class="block rounded-md text-center text-white bg-green-500 hover:bg-green-600 font-semibold">
-                  <button class="py-2 px-4 w-full">Become a Seller</button>
-                </form>
+                  <button type="button"
+                    (click)="requestSeller()"
+                    class="py-2 px-4 w-full">Become a Seller</button>
+                </div>
               </ul>
             </ng-container>
 

@@ -4,7 +4,7 @@ import {of} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import {addToCart, clearCart, loadCart, loadCartSuccess, removeFromCart} from './cart.actions';
 import CartItem from '../../types/CartItem';
-import {ImgaesUtil} from '../../helpers/ImgaesUtil';
+import {FileUtil} from '../../helpers/FileUtil';
 
 const getCart = () => {
   try {
@@ -50,7 +50,7 @@ export class CartEffects {
           cart.productsUnits.push({
             productSlug: product.slug,
             quantity: quantity,
-            photo: ImgaesUtil.getLessLoadedImage(product.attachmentsSrc) || 'assets/images/default-product-image.png',
+            photo: FileUtil.getLessLoadedImage(product.attachmentsSrc) || 'assets/images/default-product-image.png',
             price: product.price * quantity
           });
         }
