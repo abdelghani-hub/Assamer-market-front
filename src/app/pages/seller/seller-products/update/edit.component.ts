@@ -1,35 +1,48 @@
 import {Component, OnInit, inject} from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators
 } from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProductService} from '../../../../core/services/product.service';
 import {NotificationUtil} from '../../../../helpers/NotificationUtil';
 import {NgForOf, NgIf} from '@angular/common';
 import Category from '../../../../types/Category';
 import {CategoryService} from '../../../../core/services/category.service';
 import {FileService} from '../../../../core/services/file.service';
+import Product from '../../../../types/Product';
 import {FileUtil} from '../../../../helpers/FileUtil';
 
 @Component({
-  selector: 'app-create-product',
+  selector: 'app-edit-product',
   standalone: true,
-  templateUrl: './create.component.html',
+  templateUrl: './edit.component.html',
   imports: [
     NgIf,
     ReactiveFormsModule,
     NgForOf
   ]
 })
-export class CreateProductComponent implements OnInit {
-  productForm: FormGroup;
+export class EditProductComponent implements OnInit {
+  productForm: FormGroup = new FormGroup({});
   categories: Category[] = [];
   loading: boolean = false;
+  product: Product = {
+    name: '',
+    slug: '',
+    summary: '',
+    quantity: 0,
+    price: 0,
+    categoryName: '',
+    status: 'ACTIVE',
+    description: '',
+    attachmentsSrc: [],
+    storeId: '',
+    createdAt: '',
+    updatedAt: ''
+  };
 
   private fb = inject(FormBuilder);
   private productService = inject(ProductService);
@@ -37,27 +50,8 @@ export class CreateProductComponent implements OnInit {
   private categoryService = inject(CategoryService);
   private router = inject(Router);
 
-  constructor() {
-    this.productForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      slug: ['', [Validators.maxLength(100)]],
-      summary: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
-      images: [null, [FileUtil.fileTypeValidator([
-        'image/jpeg',
-        'image/jpg',
-        'image/png',
-        'image/webp',
-        'image/gif',
-        'image/svg+xml',
-        'image/bmp',
-        'image/tiff'
-      ])]],
-      quantity: [0, [Validators.required, Validators.min(0)]],
-      price: [0, [Validators.required, Validators.min(0)]],
-      categoryName: ['', Validators.required],
-      status: ['ACTIVE', Validators.required],
-      description: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(1000)]]
-    });
+  constructor(private activatedRoute: ActivatedRoute) {
+    this.initForm();
   }
 
   ngOnInit(): void {
@@ -69,35 +63,57 @@ export class CreateProductComponent implements OnInit {
         NotificationUtil.error('Failed to load categories. Please try again.')
       }
     });
+    this.activatedRoute.params.subscribe(params => {
+      const slug: string = params['slug'];
+      this.productService.getProductBySlug(slug).subscribe({
+        next: (product) => {
+          if (product) {
+            this.product = product;
+            this.productForm.patchValue({
+              name: product.name,
+              slug: product.slug,
+              summary: product.summary,
+              quantity: product.quantity,
+              price: product.price,
+              categoryName: product.categoryName,
+              status: product.status,
+              description: product.description
+            });
+          }
+        },
+        error: () => {
+          NotificationUtil.error('Failed to load product. Please try again.')
+        }
+      });
+    });
   }
 
   onSubmit() {
     if (this.productForm.valid) {
       this.loading = true;
 
-      this.productService.createProduct(this.productForm.value).subscribe({
+      this.productService.updateProduct(this.product.slug, this.productForm.value).subscribe({
         next: (product) => {
-          NotificationUtil.info("Uploading images...");
-          this.fileService.uploadProductImages(this.productForm.get('images')?.value, product).subscribe(
-            {
-              next: () => {
-                this.loading = false;
-                NotificationUtil.success('Product created successfully.');
-                this.router.navigate(['/seller/products']);
-              },
-              error: () => {
-                this.loading = false;
-                // delete product if image upload fails
-                product && this.productService.deleteProduct(product?.slug).subscribe();
+          if (!this.productForm.get('images')?.value) {
+            NotificationUtil.info("Uploading images...");
+            this.fileService.uploadProductImages(this.productForm.get('images')?.value, product).subscribe(
+              {
+                next: () => {
+                },
+                error: () => {
+                }
               }
-            }
-          )
+            )
+          }
+          this.loading = false;
+          NotificationUtil.success('Product updated successfully.');
+          this.router.navigate(['/seller/products']).then(null);
         },
         error: (error) => {
           this.loading = false;
 
           if (error.error && error.error.status === "error") {
-            NotificationUtil.error('Error creating product. Please try again.')
+            NotificationUtil.error('Error editing product. Please try again.')
 
             // Handle field-specific validation errors from server
             if (error.error.errors && Array.isArray(error.error.errors)) {
@@ -110,7 +126,7 @@ export class CreateProductComponent implements OnInit {
               });
             }
           } else {
-            NotificationUtil.error('Error creating product. Please try again.')
+            NotificationUtil.error('Error editing product. Please try again.')
           }
         }
       });
@@ -183,5 +199,28 @@ export class CreateProductComponent implements OnInit {
 
   get images() {
     return this.productForm.get('images');
+  }
+
+  private initForm() {
+    this.productForm = this.fb.group({
+      name: [this.product.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      slug: [this.product.slug, [Validators.maxLength(100)]],
+      summary: [this.product.summary, [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
+      images: [null, [FileUtil.fileTypeValidator([
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
+        'image/gif',
+        'image/svg+xml',
+        'image/bmp',
+        'image/tiff'
+      ])]],
+      quantity: [this.product.quantity, [Validators.required, Validators.min(0)]],
+      price: [this.product.price, [Validators.required, Validators.min(0)]],
+      categoryName: [this.product.categoryName, Validators.required],
+      status: [this.product.status, Validators.required],
+      description: [this.product.description, [Validators.required, Validators.minLength(20), Validators.maxLength(1000)]]
+    });
   }
 }

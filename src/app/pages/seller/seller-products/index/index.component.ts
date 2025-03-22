@@ -13,6 +13,7 @@ import {NotificationUtil} from '../../../../helpers/NotificationUtil';
 })
 export class IndexComponent implements OnInit {
   products: Product[] = [];
+  loaddingProducts: boolean = false;
 
   constructor(private productService: ProductService) {}
 
@@ -21,12 +22,16 @@ export class IndexComponent implements OnInit {
   }
 
   loadProducts(): void {
+    this.loaddingProducts = true;
     this.productService.getMyStoreProducts().subscribe({
       next: (products) => {
         this.products = products;
       },
       error: (error) => {
         console.error('Error loading products:', error);
+      },
+      complete: () => {
+        this.loaddingProducts = false;
       }
     });
   }

@@ -1,7 +1,7 @@
 import {Routes} from "@angular/router";
 import {CreateProductComponent} from './create/create.component';
-import {UpdateComponent} from './update/update.component';
 import {IndexComponent} from './index/index.component';
+import {EditProductComponent} from './update/edit.component';
 
 export const SellerProductsRoutes: Routes = [
   {
@@ -9,8 +9,8 @@ export const SellerProductsRoutes: Routes = [
     component: CreateProductComponent,
   },
   {
-    path: 'update/:slug',
-    component: UpdateComponent,
+    path: 'edit/:slug',
+    component: EditProductComponent,
   },
   {
     path: '',
