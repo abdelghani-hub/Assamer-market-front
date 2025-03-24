@@ -1,0 +1,122 @@
+<div class="overflow-y-hidden h-full px-4">
+  <div class="flex flex-row items-center py-2 w-full px-3 justify-between">
+    <h3 class="md:text-2xl font-bold text-cyan-800 dark:text-green-300">Seller Requests <sup class="text-sm">{{sellerRequests.length}}</sup></h3>
+    <!-- Success & Error alerts -->
+    <div *ngIf="successMessage" class="text-green-500 text-center bg-green-100 p-2 rounded-md">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="text-red-500 text-center bg-red-100 p-2 rounded-md">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <div
+    class="flex flex-col justify-between w-full max-h-[85vh] md:overflow-x-hidden overflow-y-scroll overflow-x-scroll shadow-2xl rounded-md">
+    <!-- Seller Requests Table -->
+    <table id="seller_requests_table"
+           class="table-auto w-full h-full text-sm md:font-medium whitespace-no-wrap border-spacing-2 px-2 pb-2">
+      <thead class="">
+      <tr class="bg-gray-400 dark:bg-green-950 dark:text-gray-300">
+        <th class="p-1 border-r border-gray-200 dark:border-gray-600">Customer</th>
+        <th class="p-1 border-r border-gray-200 dark:border-gray-600">Email</th>
+        <th class="p-1 border-r border-gray-200 dark:border-gray-600">Status</th>
+        <th class="p-1 border-r border-gray-200 dark:border-gray-600">Date Requested</th>
+        <th class="p-1 border-r border-gray-200 dark:border-gray-600" colspan="2">Actions</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="!loading, else loadingSpinner">
+        @if (sellerRequests.length > 0) {
+          @for (request of sellerRequests; track request.id) {
+            <tr class="odd:bg-gray-300 even:bg-gray-400 dark:odd:bg-gray-700 dark:even:bg-gray-800 dark:text-gray-300">
+              <td class="p-2 border-r border-gray-300 dark:border-gray-600 flex items-center gap-2">
+                <div class="flex justify-center items-center pl-5">
+                  <div class="min-w-10 min-h-10 md:w-12 md:h-12 rounded-full bg-gray-500 dark:bg-gray-300 flex items-center justify-center text-slate-500 text-lg font-bold">
+                    {{ request.user.username.charAt(0).toUpperCase() }}
+                  </div>
+                </div>
+                <div class="text-nowrap">{{ request.user.username }}</div>
+              </td>
+              <td class="p-2 border-r border-gray-300 dark:border-gray-600">
+                <p class="text-center">{{ request.user.email }}</p>
+              </td>
+              <td class="p-2 border-r border-gray-300 dark:border-gray-600">
+                <p [ngClass]="{
+                'text-center font-bold p-1 rounded': true,
+                'text-green-400 bg-lime-200 dark:bg-lime-700': request.status === 'ACCEPTED',
+                'text-red-500 bg-red-200 dark:bg-red-700': request.status === 'REJECTED',
+                'text-yellow-500 bg-yellow-200 dark:bg-yellow-700': request.status === 'PENDING'
+              }">
+                  {{ request.status }}
+                </p>
+              </td>
+              <td class="p-2 border-r border-gray-300 dark:border-gray-600">
+                <p class="text-center text-nowrap">{{ request.requestedAt | date: 'MMM d, y' }}</p>
+              </td>
+              <td class="p-2 text-right border-r border-gray-300 dark:border-gray-600">
+                <div class="flex w-full justify-around items-center gap-2">
+                  @if (request.status === 'PENDING') {
+                    <div>
+                      <button (click)="updateRequest(request.id, 'ACCEPTED')"
+                              class="flex hover:bg-green-500 font-semibold hover:text-white text-green-500 border border-green-500 rounded-md p-2">
+                        <svg class="w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                             fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 13l4 4L19 7"/>
+                        </svg>
+                      </button>
+                    </div>
+                    <div>
+                      <button (click)="updateRequest(request.id, 'REJECTED')"
+                              class="flex hover:bg-red-500 font-semibold hover:text-white text-red-500 border border-red-500 rounded-md p-2">
+                        <svg class="w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                             fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                      </button>
+                    </div>
+                  } @else {
+                    <div>
+                      <button class="flex hover:bg-red-500 font-semibold hover:text-white text-red-500 border border-red-500 rounded-md p-2">
+                        <svg class="w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                             fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  }
+                  <div>
+                    <button class="flex hover:bg-blue-500 font-semibold hover:text-white text-blue-500 border border-blue-500 rounded-md p-2">
+                      <svg class="w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                           fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm0 0v6m-6 0h12"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td colspan="6" class="text-center p-4 dark:text-gray-400">
+              No seller requests found.
+            </td>
+          </tr>
+        }
+      </tbody>
+      <ng-template #loadingSpinner>
+        <tr class="h-[80vh] bg-gray-300 dark:bg-gray-800 dark:text-gray-300">
+          <td colspan="6" class="text-center p-4 dark:text-gray-400">
+            <div class="flex justify-center items-center gap-2">
+              <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-800"></div>
+              <p>Loading seller requests...</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </table>
+  </div>
+</div>

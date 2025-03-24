@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {AuthService} from '../../core/services/auth.service';
+import {SellerService} from '../../core/services/seller.service';
 
 @Component({
   selector: 'app-aside',
@@ -17,7 +18,9 @@ export class AsideComponent implements OnInit {
   dropdownPages = true;
   dropdownSales = true;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,
+              private sellerService: SellerService
+  ) {}
 
   ngOnInit(): void {
     const user = this.authService.user;
@@ -33,8 +36,9 @@ export class AsideComponent implements OnInit {
   }
 
   fetchSellerRequestsCount(): void {
-    // This would be replaced with an actual API call
-    this.sellerRequestsCount = 5;
+    this.sellerService.getSellerRequestsCount().subscribe((count) => {
+      this.sellerRequestsCount = count;
+    });
   }
 
   toggleDropdown(dropdown: string): void {

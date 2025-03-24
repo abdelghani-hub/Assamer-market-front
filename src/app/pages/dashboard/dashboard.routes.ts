@@ -2,6 +2,7 @@ import {Routes} from "@angular/router";
 import { MainComponent } from "./main/main.component";
 import {roleGuard} from "../../core/guards/role.guard";
 import {StatisticsComponent} from "./statistics/statistics.component";
+import {SellerRequestsComponent} from './seller-requests/seller-requests.component';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
@@ -21,6 +22,10 @@ export const DASHBOARD_ROUTES: Routes = [
         path: 'statistics',
         component: StatisticsComponent,
       },
+      {
+        path: 'seller-requests',
+        component: SellerRequestsComponent
+      }
     ]
   }
 ]
