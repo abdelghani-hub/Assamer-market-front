@@ -110,7 +110,7 @@
         <!-- Category -->
         <div *ngIf="product && product.categoryName" class="flex mb-3">
           <a [routerLink]="['/categories', product.categoryName]"
-             class="font-medium bg-gray-200 text-gray-400 dark:bg-gray-600 p-1 rounded-md">
+             class="font-medium bg-gray-200 text-gray-400 dark:bg-gray-600 dark:text-emerald-400 p-1 rounded-md">
             {{ product.categoryName }}
           </a>
         </div>

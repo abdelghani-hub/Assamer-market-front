@@ -94,20 +94,45 @@ export class EditProductComponent implements OnInit {
 
       this.productService.updateProduct(this.product.slug, this.productForm.value).subscribe({
         next: (product) => {
-          if (!this.productForm.get('images')?.value) {
+          const fileInput = this.productForm.get('images')?.value;
+
+          if (fileInput) {
             NotificationUtil.info("Uploading images...");
-            this.fileService.uploadProductImages(this.productForm.get('images')?.value, product).subscribe(
-              {
-                next: () => {
-                },
-                error: () => {
+
+            // Create a progress variable if you want to show upload progress
+            let uploadProgress = 0;
+
+            this.fileService.uploadProductImages(fileInput, product).subscribe({
+              next: (response) => {
+                if (response && response.status === 'progress') {
+                  // Update progress if desired
+                  uploadProgress = response.progress;
+                  console.log(`Upload progress: ${uploadProgress}%`);
+                  // You could update a progress bar here
+                } else {
+                  // This is the final response with uploaded file URLs
+                  console.log('Images uploaded successfully:', response);
+                  // You might want to update the product's images here
+                  if (Array.isArray(response)) {
+                    this.product.attachmentsSrc = response;
+                  }
                 }
+              },
+              error: (err) => {
+                this.loading = false;
+                NotificationUtil.error(`Failed to upload images: ${err.message}`);
+              },
+              complete: () => {
+                this.loading = false;
+                NotificationUtil.success('Product and images updated successfully.');
+                this.router.navigate(['/seller/products']).then(null);
               }
-            )
+            });
+          } else {
+            this.loading = false;
+            NotificationUtil.success('Product updated successfully.');
+            this.router.navigate(['/seller/products']).then(null);
           }
-          this.loading = false;
-          NotificationUtil.success('Product updated successfully.');
-          this.router.navigate(['/seller/products']).then(null);
         },
         error: (error) => {
           this.loading = false;
@@ -136,10 +161,11 @@ export class EditProductComponent implements OnInit {
     }
   }
 
+// Fix the onFileChange method to properly handle the file input
   onFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
-      // Store the FileList directly instead of converting to array
+      // This is the key change - keep the FileList intact
       this.productForm.patchValue({
         images: input.files
       });
