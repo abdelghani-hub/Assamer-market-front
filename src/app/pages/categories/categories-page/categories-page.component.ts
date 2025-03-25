@@ -44,7 +44,6 @@ export class CategoriesPageComponent implements OnInit, AfterViewInit {
 
           this.currentCategory = this.categories.find(cat => cat.name == categoryName) || null;
 
-
           // Fetch products for this category
           if (!this.currentCategory) {
             this.currentCategory = this.categories[0];
@@ -55,6 +54,7 @@ export class CategoriesPageComponent implements OnInit, AfterViewInit {
               skipLocationChange: false
             }).then(null);
           }
+
           this.productService.getByCategory(this.currentCategory.name).subscribe({
             next: (products) => {
               this.products = products || [];
@@ -62,10 +62,19 @@ export class CategoriesPageComponent implements OnInit, AfterViewInit {
             },
             error: () => {
               NotificationUtil.error("Failed to fetch products");
+              this.products = [];
+              this.loading = false;
+            },
+            complete: () => {
               this.loading = false;
             }
           });
         },
+        error: () => {
+          // Handle categories fetch error
+          NotificationUtil.error("Failed to fetch categories");
+          this.loading = false;
+        }
       });
     });
   }
