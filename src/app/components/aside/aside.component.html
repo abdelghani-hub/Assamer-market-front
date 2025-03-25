@@ -133,7 +133,7 @@
                         </a>
                     </li>
                     <li class="seller-requests relative rounded">
-                        <span
+                        <span *ngIf="sellerRequestsCount"
                               class="rounded-full bg-yellow-200 absolute self-center p-1 ml-4 mt-2 text-xs font-bold text-gray-800">
                           {{ sellerRequestsCount }}
                         </span>
